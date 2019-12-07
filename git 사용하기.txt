@@ -1,3 +1,13 @@
 
+깃 처음에 사용하기 ---------------------------------
 
-https://swiftcoding.org/lightsail-from-window10
+1. git init       
+2. git status     // 파일들의 상태
+3. git add .      // 모든 파일 commit 대상에 포함
+4. git config --global user.email "내 이메일", 
+5. git config --global user.name "내 이름"  
+6. git log // 커밋 로그 
+7. git remote add [이름] [깃주소]
+8. git remote remove [이름]   // 원격 저장소 삭제
+9. git remote  [원격 저장소] 확인
+10. git push [이름] master // push 하기 
