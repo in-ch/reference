@@ -1,0 +1,176 @@
+
+1. AWS EC2 인스턴스 생성
+
+   ㄴ"Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - ami-0cd3dfa4e37921605"
+
+ 
+
+2. putty를 이용하여 접속
+
+
+
+3. 관리자 권한 얻기
+
+$ sudo su
+
+
+
+4. mysql 설치
+
+   ㄴ참고: http://blog.freezner.com/archives/1227
+
+   ㄴ참고: http://love0and0hate.blogspot.com/2017/02/mysql-yum.html
+
+
+
+$ sudo yum -y install mysql-server mysql   
+
+   
+
+5. nginx, php-fpm 설치 및 연동
+
+   ㄴ설치 참고: http://blog.freezner.com/archives/1227
+
+   ㄴ연동 참고: https://opentutorials.org/module/384/4332
+
+
+
+(1) yum update   
+
+$ yum -y update
+
+
+
+(2) Nginx + PHP FPM 설치
+
+$ yum install -y nginx php-fpm
+
+
+
+(3) PHP 확장 모듈 설치
+
+$ yum install -y php-devel php-mysql php-pdo php-pear php-mbstring php-cli php-odbc php-imap php-gd php-xml php-soap
+
+
+
+(4) Nginx 기본 설정 파일 작성
+
+$ vim /etc/nginx/conf.d/default.conf
+
+-----/etc/nginx/conf.d/default.conf 파일 내용 작성 및 저장-----
+
+server {
+
+    location / {
+
+        root   /var/www/html;
+
+        index  index.php index.html index.htm;
+
+    }
+
+    location ~ \.php$ {
+
+        fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
+
+        fastcgi_index  index.php;
+
+        fastcgi_param  SCRIPT_FILENAME  /usr/share/nginx/html$fastcgi_script_name;
+
+        include        fastcgi_params;
+
+    }
+
+}
+
+----------------------------------------------------
+
+
+
+(5) Nginx에 php-fpm 연동하기 위해 Nginx 설정 파일 수정
+
+$ vim /etc/nginx/nginx.conf
+
+-----/etc/nginx/nginx.conf 파일 내용 수정-----
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+
+    #
+
+    location ~ \.php$ {
+
+        fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
+
+        fastcgi_index  index.php;
+
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+
+        include        fastcgi_params;
+
+    }
+
+-----------------------------------------
+
+
+
+(6) php-fpm 설정
+
+$ sudo vim /etc/php-fpm.d/www.conf
+
+-----/etc/php-fpm.d/www.conf 파일 내용 중 각 항목을 찾아 수정 및 저장-----
+
+listen = /var/run/php-fpm/php-fpm.sock
+
+listen.owner = nginx
+
+listen.group = nginx
+
+listen.mode = 0664
+
+user = nginx
+
+group = nginx
+
+------------------------------------------------------------
+
+
+
+(7) EC2 인스턴스 재시작 시, nginx + mysql + php-fpm 자동 실행되도록 설정
+
+$ chkconfig nginx on
+
+$ chkconfig mysqld on
+
+$ chkconfig php-fpm on
+
+
+
+
+
+(7) Nginx + MySQL + php-fpm 서비스 시작
+
+$ sudo service php-fpm start
+
+$ sudo service nginx start
+
+$ sudo service mysqld start
+
+
+
+
+
+# 브라우저에서 php 페이지 접근 가능한지 확인하기 위해 test.php 파일 생성
+
+$ vim /usr/share/nginx/html/test.php
+
+-----/usr/share/nginx/html/test.php 파일 내용 작성 및 저장-----
+
+<?php
+
+phpinfo();
+
+?>
+
+
+
+출처: https://soohyeon317.tistory.com/entry/nginx-phpfpm-mysql-서비스-올리기 [Dean Story]

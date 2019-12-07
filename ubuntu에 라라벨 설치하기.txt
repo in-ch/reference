@@ -1,0 +1,1 @@
+https://blog.storyg.co/laravels/install-on-ubuntu16-with-php7-and-nginx

@@ -1,0 +1,20 @@
+[xengin]
+
+[Laravel 설치하기]
+
+https://www.youtube.com/watch?v=bWPPDjpWgW8 
+
+[composer 설치 한 후]
+
+composer create-project --prefer-dist laravel/laravel Laravel 
+
+[cmd 에 입력]
+
+[설치 다 한 후 cmd 의 디렉토리 위치 확인 해 주고 ] 
+
+php artisan serve 입력하면 서버 열림, 만약 안 열리면 한 번 더 입력 
+
+
+
+
+
