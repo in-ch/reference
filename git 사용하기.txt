@@ -6,8 +6,9 @@
 3. git add .      // 모든 파일 commit 대상에 포함
 4. git config --global user.email "내 이메일", 
 5. git config --global user.name "내 이름"  
-6. git log // 커밋 로그 
-7. git remote add [이름] [깃주소]
-8. git remote remove [이름]   // 원격 저장소 삭제
-9. git remote  [원격 저장소] 확인
-10. git push [이름] master // push 하기 
+6. git commit -m "커밋내용"
+7. git log // 커밋 로그 
+8. git remote add [이름] [깃주소]
+9. git remote remove [이름]   // 원격 저장소 삭제
+10. git remote  [원격 저장소] 확인
+11. git push [이름] master // push 하기 
