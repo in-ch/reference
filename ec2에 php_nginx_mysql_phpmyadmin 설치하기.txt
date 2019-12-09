@@ -1,0 +1,105 @@
+https://www.stechies.com/install-nginx-phpfpm-mysql-phpmyadmin-ec2-amazon-linux-ami/
+
+
+[1. AWS EC2 인스턴스 생성]
+
+   ㄴ"Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - ami-0cd3dfa4e37921605"
+
+ 
+
+[2. putty를 이용하여 접속]
+
+
+[3. 업데이트]
+
+인스턴스에서 빠른 소프트웨어 업데이트를 수행하여 모든 소프트웨어 패키지를 최신 상태로 유지하십시오.
+
+sudo yum -y update
+sudo yum install -y gcc make
+
+
+
+[4. Nginx & PHP 7.2 설치]
+
+sudo yum install nginx php72-fpm -y
+
+[5. PHP 7.2 확장 설치]
+
+sudo yum install php72-mcrypt php72-xml php72-mcrypt php72-zip php72-xmlrpc php72-gd php72-curl php72-pdo php72-mysqlnd php72-mbstring php72-gmp -y
+
+
+[6. php-apc 설치] 
+
+sudo yum install -y php-pecl-apc
+sudo yum install -y pcre-devel
+
+[7. MySQL 설치]
+
+sudo yum -y install mysql57-server mysql
+
+[8. Nginx, PHP-FPM, MySQL 서비스 시작]
+
+sudo service mysqld start
+sudo service nginx start
+sudo service php-fpm start
+
+[9. 부팅 순서로 NGINX, PHP-FPM 및 Mysql 서비스 시작 추가]
+
+sudo chkconfig nginx on
+sudo chkconfig php-fpm on
+sudo chkconfig mysqld on
+
+[10. 기본 디렉토리 위치 ]
+
+/ usr / share / nginx / html
+
+[11. nginx 구성 파일 위치]
+
+/etc/nginx/nginx.conf
+
+[12. 파일 권한을 설정하려면]
+
+다음 명령을 사용하여 사용자 (이 경우 ec2-user)를 nginx 그룹에 추가하십시오.
+
+sudo usermod -a -G nginx ec2-user
+
+ec2-user wheel nginx 
+
+[13. / usr / share / nginx의 그룹 소유권과 내용을 nginx 그룹으로 변경하십시오.]
+
+sudo chown -R ec2-user:nginx /usr/share/nginx 
+
+[14. 그룹 쓰기 권한을 추가하고 향후 서브 디렉토리에서 그룹 ID를 설정하려면 / usr / share / nginx 및 해당 서브 디렉토리의 디렉토리 권한을 변경하십시오.]
+
+sudo chmod 2775 /usr/share/nginx
+find /usr/share/nginx -type d -exec sudo chmod 2775 {} \;
+
+[15. 그룹 쓰기 권한을 추가하려면 / usr / share / nginx 및 해당 서브 디렉토리의 파일 권한을 재귀 적으로 변경]
+
+find /usr/share/nginx -type f -exec sudo chmod 0664 {} \; 
+
+[16. 실험하기]
+
+echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/phpinfo.php 
+
+[17. 서버보안]
+
+sudo mysql_secure_installation
+
+[18. phpmyAdmin 설치]
+
+sudo yum install php72-mbstring.x86_64 php72-zip.x86_64 -y 
+sudo service nginx restart
+sudo service php-fpm restart
+cd /usr/share/nginx/html
+wget https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz
+mkdir phpMyAdmin && tar -xvzf phpMyAdmin-latest-all-languages.tar.gz -C phpMyAdmin --strip-components 1
+rm phpMyAdmin-latest-all-languages.tar.gz
+sudo service mysqld start
+
+[19. 도메인 /phpMyAdmin 에 접속해서 잘 다운됐는지 확인]
+
+
+
+
+
