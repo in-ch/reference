@@ -1,0 +1,15 @@
+python3 -m venv env       //env 폴더 생성
+source ./env/bin/activate   // 가상모드 실행 
+deactivate                       //가상모드 종료 
+
+
+가상모드 상태에서 ---------------
+
+pip3 install bs4                       // 가상모드에 bs4 라이브러리 설치
+pip3 freeze > requirements.text // 설치한 라이브러리를 가상머신에 자동으로 등록 
+vi requirements.text                 // 확인해보면 라이브러리 자동으로 등록되어 있음
+
+
+
+
+
