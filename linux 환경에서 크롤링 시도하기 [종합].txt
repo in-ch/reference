@@ -1,0 +1,77 @@
+linux 환경에서 크롤링 시도하기 [종합]
+
+[1. 파이썬 설치하기]
+
+기본적으로 python이 linux 환경에는 깔렸있다.
+
+python --version   // 이렇게 치면 2.7? 버전이 뜬다.
+
+python3로 업데이트 해야 하니 
+
+sudo yum install python36.x86_64 python36-devel.x86_64 python36-libs.x86_64 python36-pip-noarch
+
+아직도 python2.7버전이 기본버전으로 되어 있으니 수정해야함
+
+cd ~
+vim .bashrc 
+
+다음과 같이 수정
+
+# .bashrc
+
+# Source global definitions 
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific aliases and functions
+alias python="/usr/bin/python36"
+
+저장 후 나간 다음 다시 접속하면 python 3.6이 뜨는 걸 확인할 수 있다.
+
+
+[pip 설치 하기 ]
+
+cd /tmp
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py --user
+pip3 --version
+
+
+[크롤링에 필요한 모듈 설치]
+
+sudo pip install selenium 
+sudo pip install pymysql 
+sudo pip install bs4 
+
+[최신 버전 크롬 설치]
+
+curl https://intoli.com/install-google-chrome.sh | bash
+sudo mv /usr/bin/google-chrome-stable /usr/bin/google-chrome
+google-chrome --version && which google-chrome   //버전 확인 완료 이제 이 버전의 chromedriver가 필요함
+
+
+[chromedriver 설치]
+
+sudo wget https://chromedriver.storage.googleapis.com/79.0.3945.36/chromedriver_linux64.zip
+sudo unzip chromedriver_linux64.zip     //chromedriver는 usr/bin 폴더에 설치하는 게 좋음 
+
+[환경 끝]
+
+
+[기타]
+
+headless로 실행해야함 
+
+
+chrome_options = webdriver.ChromeOptions()
+
+chrome_options.add_argument('--headless')
+
+chrome_options.add_argument('--no-sandbox')
+
+chrome_options.add_argument('--disable-dev-shm-usage')
+
+driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=chrome_options)
+
+
