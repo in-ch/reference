@@ -1,0 +1,16 @@
+npm 패키지 모듈로 자바스크립트 파일 min으로 만들어 배포하기
+
+1) 설치하기 
+
+npm install uglify-js -g // -g 는 global의 약자, 컴퓨터 전역에서 사용하는 독립적인 sw로 사용
+npm install uglify-js // local로 간주, 현재 프로젝트 안에서 부품으로 사용
+
+2) js 파일 작성
+
+ex) function hi() {
+ 	console.log('hi')
+    }
+
+3) min 파일로 만들기 
+
+$ uglifyjs [파일이름].js -m -o [파일이름].min.js
